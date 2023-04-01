@@ -65,14 +65,14 @@ class BDspider(object):
         try:
             docs_div = page.find('div', {'id': 'content_left'}).\
                 find_all(class_ = self.doc_content_class_name)
-        except:
-            logging.error("Failed to find class name.")
+        except Exception as e:
+            logging.error("Failed to find class name.", e)
             return search_result
 
         doc_info = self._getDocInfo(docs_div, reuslt_num)
-
-        search_result["docs"] = doc_info
-        search_result["status"] = 200
+        if len(doc_info) > 0:
+            search_result["docs"] = doc_info
+            search_result["status"] = 200
 
         return search_result
 

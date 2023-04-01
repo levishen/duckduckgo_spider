@@ -20,6 +20,9 @@ class DDGspider(object):
         self.chrome_options.add_argument('blink-settings=imagesEnabled=false')
         self.chrome_options.add_argument('--incognito')
 
+        self.chrome_options.add_argument(
+            "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36")
+
         self.chrome_options.add_experimental_option('useAutomationExtension', False)
         self.chrome_options.add_experimental_option('excludeSwitches', ['enable-automation'])
 
@@ -50,7 +53,7 @@ class DDGspider(object):
         except Exception:
             logging.error("{}: Html format is invalid.".format(query))
 
-        driver.quit()
+        driver.close()
         return {"status": status, "html": page}
 
     # status: 成功 200，其它 0
@@ -69,9 +72,9 @@ class DDGspider(object):
             return search_result
 
         doc_info = self._getText(docs_div, reuslt_num)
-
-        search_result["docs"] = doc_info
-        search_result["status"] = 200
+        if len(doc_info) > 0:
+            search_result["docs"] = doc_info
+            search_result["status"] = 200
 
         return search_result
 
