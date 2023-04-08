@@ -1,3 +1,5 @@
+import re
+
 import logging
 from bs4 import BeautifulSoup
 
@@ -78,6 +80,12 @@ class DDGspider(object):
 
         return search_result
 
+    def _cleanText(self, text):
+
+        return re.sub(r'(\n){4,}', '\n\n\n', text.strip()).\
+            replace(' {3,}', ' ').replace('\t', '').replace(
+            '\n+(\s*\n)*', '\n')
+
     # doc = {"order": 1, "title" : "", "abstract" : "", "url" : []}
     def _getText(self, docs_div, result_number):
         doc_info = []
@@ -95,8 +103,10 @@ class DDGspider(object):
                     continue
 
                 doc["oredr"] = order
-                doc["title"] = ";".join([span.get_text() for span in title_div.find_all('span')])
-                doc["abstract"] = ";".join([span.get_text() for span in abstract_div.find_all('span')])
+                title = ";".join([span.get_text() for span in title_div.find_all('span')])
+                doc["title"] = self._cleanText(title)
+                abstract = ";".join([span.get_text() for span in abstract_div.find_all('span')])
+                doc["abstract"] = self._cleanText(abstract)
                 doc["url"] = [link.get("href", "") for link in url_div.find_all('a')]
 
                 order += 1
@@ -108,5 +118,5 @@ class DDGspider(object):
 
 if __name__ == "__main__":
     spider = DDGspider()
-    search_result = spider.htmlToSearchResult("苍兰诀", 3)
+    search_result = spider.htmlToSearchResult("介绍一下狂飙", 3)
     print(search_result)
