@@ -1,7 +1,8 @@
 import argparse
 import clueai
 from datetime import datetime
-from spider import DDGspider
+from src.spider import DDGspider
+
 
 class WebChatYuan():
     def __init__(self):
