@@ -1,3 +1,4 @@
+import argparse
 import clueai
 from datetime import datetime
 from spider import DDGspider
@@ -43,5 +44,8 @@ class WebChatYuan():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--query', help='query')
+    args = parser.parse_args()
     chat = WebChatYuan()
-    print(chat.getPrediction("2022年世界杯冠军是哪个国家"))
+    print(chat.getPrediction(args.query))
