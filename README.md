@@ -1,3 +1,7 @@
+### WebChatYuan
+*利用网络内容和chatYuan大模型回答问题*
+- python WebChatYuan.py   
+
 ### Linux 前置环境设置
 1. 安装chrome
 yum install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
